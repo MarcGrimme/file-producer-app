@@ -11,4 +11,5 @@ Basically it creates 10 files of size 30MB in local storage and copies them over
 
 ## Link to app files
 
-* [file-producer.crx](./file-producer.crx)
+* [file-producer.crx](./file-producer.crx) for Chrome >= 88
+* [file-producer.crx](./file-producer.crx) for Chrome < 88 
