@@ -9,7 +9,7 @@ function log(message) {
 
 function show_archive_folder() {
    chrome.storage.local.get(FOLDER_NAME, function(storage) {
-      document.getElementById('archive-folder').textContent = storage.folder;
+      document.getElementById('archive-folder').textContent = storage.name;
    });
 }
 
@@ -77,7 +77,7 @@ function create_archive(fs) {
   getEntries();
 }
 
-onload = function() {
+window.onload = function() {
    show_archive_folder();
 
    document.getElementById('read-files').onclick = function() {
@@ -106,6 +106,7 @@ onload = function() {
       log('choose folder..');
       chrome.fileSystem.chooseEntry({ type: "openDirectory" }, function(folder) {
          chrome.storage.local.set({ FOLDER_NAME: chrome.fileSystem.retainEntry(folder) })
+         document.getElementById('archive-folder').textContent = folder.name;
       });
       show_archive_folder();
    };
@@ -121,5 +122,13 @@ onload = function() {
          function(e) { log('Filesystem error' + e);}
       );
    };
+
+   // to allow a kiosk app to close
+   if (document.querySelector('#reset')) {
+     document.querySelector('#reset').onclick = function() {
+        window.close();
+      };
 }
+}
+
 
