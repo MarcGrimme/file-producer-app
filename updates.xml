@@ -1,9 +1,9 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <gupdate xmlns='http://www.google.com/update2/response' protocol='2.0'>
-  <app appid='inngnmfekahhifckbimipigkcdkbhffm'>
+  <app appid='gnlebdmgkjgoefpnelabinijdlnmladj'>
     <updatecheck codebase='https://raw.githubusercontent.com/MarcGrimme/file-producer-app/master/file-producer.crx' version='88.0' />
   </app>
-  <app appid='inngnmfekahhifckbimipigkcdkbhffm'>
+  <app appid='gnlebdmgkjgoefpnelabinijdlnmladj'>
     <updatecheck codebase='https://raw.githubusercontent.com/MarcGrimme/file-producer-app/master/file-producer-old.crx'/>
   </app>
 </gupdate>
