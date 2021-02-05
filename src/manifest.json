@@ -1,7 +1,7 @@
 {
   "update_url": "https://marcgrimme.github.io/file-producer-app/updates.xml",
   "name": "Files Producer App",
-  "version": "1.1",
+  "version": "1.2",
   "manifest_version": 2,
   "key": "cjjcpiijafdcemjppnakdffofagnmhoi",
   "icons": {
