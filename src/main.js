@@ -15,7 +15,7 @@ function show_archive_folder() {
 
 function save_file_entry_to_folder(entry) {
    chrome.storage.local.get(FOLDER_NAME, function(storage) {
-      chrome.fileSystem.restoreEntry(storage.folder, function(folder) {
+      chrome.fileSystem.restoreEntry(storage.name, function(folder) {
          log("saving file " + entry.fullPath + ' => ' + folder.fullPath);
          entry.moveTo(folder);
       })
