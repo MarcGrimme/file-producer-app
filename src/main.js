@@ -80,12 +80,6 @@ function create_archive(fs) {
 window.onload = function() {
    show_archive_folder();
 
-   document.getElementById('read-files').onclick = function() {
-      navigator.webkitPersistentStorage.queryUsageAndQuota(
-         function(usage, quota) { log("usage " + usage + " quota " + quota) },
-         function(e) { log('Error: ' + e); });
-   };
-
    document.getElementById('produce-files').onclick = function() {
       navigator.webkitPersistentStorage.requestQuota(
          BIG_FILE * FILES,
