@@ -8,18 +8,26 @@ function log(message) {
 }
 
 function show_archive_folder() {
-   chrome.storage.local.get(FOLDER_NAME, function(storage) {
-      document.getElementById('archive-folder').textContent = storage.name;
+   get_folderid(function(folder_id) {
+      document.getElementById('archive-folder').textContent = folder_id;
+   });
+}
+
+function get_folderid(callback) {
+   chrome.storage.local.get(['folder'], function(result) {
+      log('folder_id: ' +result.folder);
+      callback(result.folder);
    });
 }
 
 function save_file_entry_to_folder(entry) {
-   chrome.storage.local.get(FOLDER_NAME, function(storage) {
-      chrome.fileSystem.restoreEntry(storage.name, function(folder) {
-         log("saving file " + entry.fullPath + ' => ' + folder.fullPath);
+   var folder_id;
+   folder_id = get_folderid(function(folder_id) {
+      chrome.fileSystem.restoreEntry(folder_id, function(folder) {
          entry.moveTo(folder);
-      })
-   })
+         log("saving file " + entry.fullPath + ' => ' + folder.fullPath);
+      });
+   });
 }
 
 function create_files(fs) {
@@ -98,11 +106,12 @@ window.onload = function() {
 
    document.getElementById('choose-folder').onclick = function() {
       log('choose folder..');
-      chrome.fileSystem.chooseEntry({ type: "openDirectory" }, function(folder) {
-         chrome.storage.local.set({ FOLDER_NAME: chrome.fileSystem.retainEntry(folder) })
-         document.getElementById('archive-folder').textContent = folder.name;
+      chrome.fileSystem.chooseEntry({ type: "openDirectory" }, function(entry) {
+         chrome.storage.local.set({ folder: chrome.fileSystem.retainEntry(entry) }, function() {
+           log('Folder '+entry.name+' is saved.');
+           show_archive_folder();
+         });
       });
-      show_archive_folder();
    };
 
    document.getElementById('create-archive',).onclick = function() {
