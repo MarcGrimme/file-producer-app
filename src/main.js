@@ -1,6 +1,4 @@
-var BIG_FILE = 30 * 1024 * 1024;
 var FILES = 10;
-var FOLDER_NAME = "folder";
 
 function log(message) {
    // document.getElementById('log').textContent += message + '\n';
@@ -21,8 +19,7 @@ function get_folderid(callback) {
 }
 
 function save_file_entry_to_folder(entry) {
-   var folder_id;
-   folder_id = get_folderid(function(folder_id) {
+   get_folderid(function(folder_id) {
       chrome.fileSystem.restoreEntry(folder_id, function(folder) {
          entry.moveTo(folder);
          log("saving file " + entry.fullPath + ' => ' + folder.fullPath);
@@ -36,7 +33,7 @@ function create_files(fs) {
       log('Creating file ' + filename);
       fs.root.getFile(
          filename,
-         {create: true, exclusive: true},
+         {create: true, exclusive: false},
          function(fileEntry) {
             log('fileEntry: ' + fileEntry);
             fileEntry.createWriter(function(fileWriter) {
@@ -49,11 +46,7 @@ function create_files(fs) {
                   log('Write failed: ' + e.toString());
                };
 
-               var data = [];
-               for (var i = 0; i < BIG_FILE/50; i++) {
-                  data.push('01234567890123456789012345678901234567890123456789');
-               }
-               fileWriter.write(new Blob(data, {type: 'text/plain'}));
+               fileWriter.write(new Blob(['0123456789'], {type: 'text/plain'}));
             }, function(e) {
                log('Error: ' + e);
             });
@@ -90,12 +83,12 @@ window.onload = function() {
 
    document.getElementById('produce-files').onclick = function() {
       navigator.webkitPersistentStorage.requestQuota(
-         BIG_FILE * FILES,
+         FILES * 10,
          function(grantedBytes) { log('Granted quota ' + grantedBytes) },
          function(e) { log('Granted quota error : ' + e); });
       window.webkitRequestFileSystem(
          PERSISTENT,
-         BIG_FILE,
+         FILES * 10,
          function(fs) {
             log('Filesystem: ' + fs);
             create_files(fs);
@@ -117,7 +110,7 @@ window.onload = function() {
    document.getElementById('create-archive',).onclick = function() {
       window.webkitRequestFileSystem(
          PERSISTENT,
-         BIG_FILE,
+         FILES * 10,
          function(fs) {
             log('Filesystem: ' + fs);
             create_archive(fs.root);
